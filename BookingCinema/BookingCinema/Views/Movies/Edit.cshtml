@@ -4,41 +4,159 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<style type="text/css">
+    .seats-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 60px);
+        grid-gap: 15px;
+    }
 
-<h4>Movie</h4>
+    .seat {
+        text-align: center;
+        padding: 20px;
+        background-color: gray;
+        border-radius: 25px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .taken {
+        background-color: red;
+        pointer-events: none;
+    }
+
+    .selected {
+        background-color: green;
+    }
+
+    .m20 {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+@functions {
+    public static bool contains(String[] a, int val)
+    {
+        return Array.IndexOf(a, val.ToString()) != -1;
+    }
+}
+
+@functions {
+    public string getSeatClass(int number)
+    {
+        var takenSeats = ViewBag.decodedTakenSeats;
+        if (takenSeats.Length > 0 && contains(takenSeats, number))
+        {
+            return "seat taken";
+        }
+
+        return "seat";
+    }
+}
+
+@functions {
+    public string getSeatId(int number)
+    {
+        return number.ToString();
+    }
+}
+
+<script>
+    function selectSeat(event) {
+        var seatNumber = event.target.id;
+
+        var input = document.getElementById('book-seats-input');
+        var element = document.getElementById(seatNumber);
+
+        var selectedSeats = input.value;
+        var extractedSeats = selectedSeats.split(",");
+        console.log(extractedSeats);
+
+        if (extractedSeats.includes(seatNumber)) {
+            // Deselect
+            var index = extractedSeats.indexOf(seatNumber);
+            extractedSeats.splice(index, 1);
+            element.classList.remove('selected');
+        } else {
+            // Select
+            extractedSeats.push(seatNumber);
+            element.classList.add('selected');
+        }
+
+        // Convert array to string
+        var updatedInputValue = extractedSeats.join(",");
+        input.value = updatedInputValue;
+    }
+</script>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+@if (User.IsInRole("ADMINISTRATOR"))
+{
+    <h1>Edit</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReleaseDate" class="control-label"></label>
+                    <input asp-for="ReleaseDate" class="form-control" />
+                    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReleaseDate" class="control-label"></label>
+                    <input asp-for="Genre" class="form-control" />
+                    <span asp-validation-for="Genre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Genre" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <h1>@Html.DisplayNameFor(model => model.Title)</h1>
+    <h4>Price for one ticket: @Html.DisplayNameFor(model => model.Price)</h4>
+    <h4>Select seats:</h4>
+    <div class="row">
+        <div class="seats-grid">
+            @for (int i = 0; i < 20; i++)
+            {
+                <div id="@getSeatId(i)" class="@getSeatClass(i)" onclick="selectSeat(event)">@i</div>
+            }
+
+        </div>
+    </div>
+    <form asp-action="Edit">
+        <div class="row">
+            @*<p>Select a seat (user can only book one seat per transaction):</p>*@
+            <div class="form-group hidden">
+                <input id="book-seats-input" asp-for="TakenSeats" class="form-control" />
+            </div>
+
+            <div class="form-group m20">
+                <input type="submit" value="Book Seats" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+}
 
 <div>
     <a asp-action="Index">Back to List</a>
