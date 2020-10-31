@@ -192,3 +192,8 @@ C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcore
 C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\Movies\Edit.cshtml.g.cs
 C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\Movies\Index.cshtml.g.cs
 C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookSeat\Index.cshtml.g.cs
+C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookedMovies\Create.cshtml.g.cs
+C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookedMovies\Delete.cshtml.g.cs
+C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookedMovies\Details.cshtml.g.cs
+C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookedMovies\Edit.cshtml.g.cs
+C:\Projects\GitHub\asp-net-booking\BookingCinema\BookingCinema\obj\Debug\netcoreapp3.1\Razor\Views\BookedMovies\Index.cshtml.g.cs

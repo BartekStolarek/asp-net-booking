@@ -1,8 +1,50 @@
-﻿@{
+﻿@model IEnumerable<BookingCinema.Models.BookedMovies>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">BookingCinema</h1>
-    <p>Zaloguj się lub zarejestruj aby kontynuować.</p>
-</div>
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="text-center">
+        <h1 class="display-4">BookingCinema</h1>
+        <p>Log in or register to proceed.</p>
+    </div>
+}
+else
+{
+
+    <h2>My booked Movies:</h2>
+    @if (Model == null)
+    {
+        <h5>You have no booked movies.</h5>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                       Movie Name
+                    </th>
+                    <th>
+                        Booked Seats
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MovieName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TakenSeats)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

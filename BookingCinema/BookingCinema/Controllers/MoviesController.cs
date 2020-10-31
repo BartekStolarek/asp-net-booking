@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookingCinema.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace BookingCinema.Controllers
 {
@@ -14,6 +16,8 @@ namespace BookingCinema.Controllers
     public class MoviesController : Controller
     {
         private readonly BookingCinemaContext _context;
+
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public MoviesController(BookingCinemaContext context)
         {
@@ -146,8 +150,31 @@ namespace BookingCinema.Controllers
                 // Check if selected seats by user were not taken before
                 // TODO
 
+                var previouslySelectedSeats = foundMovie.TakenSeats;
+                var currentlySelectedSeats = movie.TakenSeats;
+                var userSelectedSeats = "";
+
+                if (currentlySelectedSeats != null)
+                {
+                    if (previouslySelectedSeats != null)
+                    {
+                        String[] decodedPreviouslySelectedSeats = previouslySelectedSeats.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        String[] decodedCurrentlySelectedSeats = currentlySelectedSeats.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        var excluded = decodedCurrentlySelectedSeats.Except(decodedPreviouslySelectedSeats);
+                        userSelectedSeats = string.Join(",", excluded);
+                    } else
+                    {
+                        userSelectedSeats = currentlySelectedSeats;
+                    }
+                } else
+                {
+                    userSelectedSeats = previouslySelectedSeats;
+                }
+
                 foundMovie.TakenSeats = movie.TakenSeats;
 
+                // Update takenSeats in movie
                 try
                 {
                     _context.Update(foundMovie);
@@ -164,6 +191,29 @@ namespace BookingCinema.Controllers
                         throw;
                     }
                 }
+
+                // Update BookedMovies table
+                var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var movieID = movie.ID;
+                var movieName = movie.Title;
+                var takenSeatsByUser = movie.TakenSeats;
+
+                try
+                {
+                    var bookedMovie = new BookedMovies();
+                    bookedMovie.MovieID = movieID;
+                    bookedMovie.UserID = userID;
+                    bookedMovie.MovieName = movieName;
+                    bookedMovie.TakenSeats = userSelectedSeats;
+
+                    _context.Add<BookedMovies>(bookedMovie);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
@@ -204,5 +254,7 @@ namespace BookingCinema.Controllers
         {
             return _context.Movie.Any(e => e.ID == id);
         }
+
+        // private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }
