@@ -57,7 +57,7 @@ namespace BookingCinema.Controllers
         [Authorize(Roles = "ADMINISTRATOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,ReleaseDate,Genre,Price,TakenSeats")] Movie movie)
+        public async Task<IActionResult> Create([Bind("ID,Title,ReleaseDate,Genre,Price,TakenSeats,ImageUrl")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -93,17 +93,6 @@ namespace BookingCinema.Controllers
                     String[] decodedTakenSeats = takenSeats.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     ViewBag.decodedTakenSeats = decodedTakenSeats;
                 }
-                //string[] allSeats = new string[20] as string[];
-                // var allSeats = ["1", "2", "3"];
-                //for (int i = 0; i < allSeats.Length; i++)
-                //{
-                //    allSeats[i] = i.ToString();
-                //}
-                // Console.WriteLine(allSeats);
-                //String[] allSeats = new string[]{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" };
-
-                //ViewBag.availableSeats = allSeats.Except(decodedTakenSeats);
-                //Console.WriteLine(ViewBag.availableSeats);
             }
 
             return View(movie);
@@ -116,7 +105,7 @@ namespace BookingCinema.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ReleaseDate,Genre,Price,TakenSeats")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,ReleaseDate,Genre,Price,TakenSeats,ImageUrl")] Movie movie)
         {
             if (id != movie.ID)
             {
@@ -159,12 +148,6 @@ namespace BookingCinema.Controllers
 
                 foundMovie.TakenSeats = movie.TakenSeats;
 
-                /*Console.WriteLine(".............................");
-                Console.WriteLine(movie);
-                Console.WriteLine(movie.ID);
-                Console.WriteLine(movie.TakenSeats);
-                Console.WriteLine(movie.Title);
-                Console.WriteLine(".............................");*/
                 try
                 {
                     _context.Update(foundMovie);
@@ -185,53 +168,7 @@ namespace BookingCinema.Controllers
             }
             return View(movie);
         }
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookSeat(int id, [Bind("ID,Title,ReleaseDate,Genre,Price,TakenSeats")] Movie movie)
-        {
-            /*
-            if (id != movie.ID)
-            {
-                return NotFound();
-            }
-
-            //if (User.IsInRole("ADMINISTRATOR"))
-            //{
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            //} else
-            // {
-            //    Console.WriteLine(movie);
-            //}
-            */
-            Console.WriteLine(movie);
-
-            return View(movie);
-        }
-
+        
         // GET: Movies/Delete/5
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> Delete(int? id)
