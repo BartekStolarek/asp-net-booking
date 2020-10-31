@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BookingCinema.Controllers
 {
-    //[Authorize(Roles="ADMINISTRATOR")]
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly BookingCinemaContext _context;
@@ -148,8 +148,6 @@ namespace BookingCinema.Controllers
                 }
 
                 // Check if selected seats by user were not taken before
-                // TODO
-
                 var previouslySelectedSeats = foundMovie.TakenSeats;
                 var currentlySelectedSeats = movie.TakenSeats;
                 var userSelectedSeats = "";
@@ -195,7 +193,7 @@ namespace BookingCinema.Controllers
                 // Update BookedMovies table
                 var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var movieID = movie.ID;
-                var movieName = movie.Title;
+                var movieName = foundMovie.Title;
                 var takenSeatsByUser = movie.TakenSeats;
 
                 try
@@ -214,7 +212,7 @@ namespace BookingCinema.Controllers
                     throw;
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(movie);
         }

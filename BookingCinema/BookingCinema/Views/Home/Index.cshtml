@@ -14,37 +14,44 @@ else
 {
 
     <h2>My booked Movies:</h2>
-    @if (Model == null)
+    @if (Model == null || !Model.Any())
     {
         <h5>You have no booked movies.</h5>
     }
     else
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                       Movie Name
-                    </th>
-                    <th>
-                        Booked Seats
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MovieName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TakenSeats)
-                        </td>
+                        <th>
+                            Movie Name
+                        </th>
+                        <th>
+                            Booked Seats
+                        </th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MovieName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TakenSeats)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <a class="btn btn-primary" style="margin-top: 20px;" asp-controller="Movies">Browse movies</a>
+        </div>
+    </div>
     }
 }
