@@ -20,3 +20,11 @@ INSERT INTO Movie VALUES
 > **Note:** This is just an example query adding a couple of movies to the Movie table. This is an optional step, that would make using the application easier with pre-loaded movies.
 
 4. Run project (in Visual Studio preferably using IIS Express). This should connect automatically with the database and run application by default on the localhost.
+
+## Project preview
+
+![Movies List](/preview-assets/screenshot1.png)
+
+![Booking a seat](/preview-assets/screenshot2.png)
+
+![Booked Movies](/preview-assets/screenshot3.png)
