@@ -23,8 +23,8 @@ INSERT INTO Movie VALUES
 
 ## Project preview
 
-![Movies List](preview-assets/screenshot1.png)
+![Movies List](https://raw.githubusercontent.com/BartekStolarek/asp-net-booking/main/preview-assets/screenshot1.PNG)
 
-![Booking a seat](preview-assets/screenshot2.png)
+![Booking a seat](https://raw.githubusercontent.com/BartekStolarek/asp-net-booking/main/preview-assets/screenshot2.PNG)
 
-![Booked Movies](preview-assets/screenshot3.png)
+![Booked Movies](https://raw.githubusercontent.com/BartekStolarek/asp-net-booking/main/preview-assets/screenshot3.PNG)
