@@ -23,8 +23,8 @@ INSERT INTO Movie VALUES
 
 ## Project preview
 
-![Movies List](/preview-assets/screenshot1.png)
+![Movies List](preview-assets/screenshot1.png)
 
-![Booking a seat](/preview-assets/screenshot2.png)
+![Booking a seat](preview-assets/screenshot2.png)
 
-![Booked Movies](/preview-assets/screenshot3.png)
+![Booked Movies](preview-assets/screenshot3.png)
